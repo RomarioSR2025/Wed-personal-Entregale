@@ -1,0 +1,57 @@
+<%- include('partials/header') %>
+
+<main class="container">
+  <h1 class="mb-4">Editar Pedido</h1>
+
+  <form action="/edit/<%= pedido.idpedido %>" method="POST" class="row g-4">
+    
+    <div class="col-md-6">
+      <label for="idcliente" class="form-label">Cliente</label>
+      <select id="idcliente" name="idcliente" class="form-select" required>
+        <% clientes.forEach(cliente => { %>
+          <option value="<%= cliente.idcliente %>" <%= cliente.idcliente === pedido.idcliente ? 'selected' : '' %>>
+            <%= cliente.nombre %> <%= cliente.apellido %>
+          </option>
+        <% }) %>
+      </select>
+    </div>
+
+  
+    <div class="col-md-6">
+      <label for="idmanga" class="form-label">Manga</label>
+      <select id="idmanga" name="idmanga" class="form-select" required>
+        <% mangas.forEach(manga => { %>
+          <option value="<%= manga.idmanga %>" <%= manga.idmanga === pedido.idmanga ? 'selected' : '' %>>
+            <%= manga.titulo %> - Vol. <%= manga.volumen %>
+          </option>
+        <% }) %>
+      </select>
+    </div>
+
+    
+    <div class="col-md-4">
+      <label for="cantidad" class="form-label">Cantidad</label>
+      <input type="number" min="1" id="cantidad" name="cantidad" class="form-control" value="<%= pedido.cantidad %>" required>
+    </div>
+
+    
+    <div class="col-md-4">
+      <label for="fecha" class="form-label">Fecha</label>
+      <input type="date" id="fecha" name="fecha" class="form-control" value="<%= pedido.fecha.toISOString().split('T')[0] %>" required>
+    </div>
+
+    
+    <div class="col-md-4">
+      <label for="precio_unit" class="form-label">Precio Unitario ($)</label>
+      <input type="number" min="0" step="0.01" id="precio_unit" name="precio_unit" class="form-control" value="<%= pedido.precio_unit %>" required>
+    </div>
+
+    
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Actualizar Pedido</button>
+      <a href="/" class="btn btn-secondary ms-2">Cancelar</a>
+    </div>
+  </form>
+</main>
+
+<%- include('partials/footer') %>

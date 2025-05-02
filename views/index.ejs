@@ -1,0 +1,66 @@
+<%- include('partials/header') %>
+
+<main class="container">
+  <h1 class="mb-4" style="text-align: center;">Tienda de Manga</h1>
+
+  <% if (manga && manga.length > 0) { %>
+    <div class="row">
+      <% manga.forEach(pedido => { %>
+        <div class="col-md-4 mb-4">
+          <div class="card" style="width: 18rem;">
+            
+            <img src="<%= pedido.imagen %>" class="card-img-top" alt="<%= pedido.manga_titulo %>">
+            
+            <div class="card-body">
+              
+              <h5 class="card-title"><%= pedido.manga_titulo %> - Vol. <%= pedido.volumen %></h5>
+              <p class="card-text">
+                Cliente: <%= pedido.cliente_nombre %> <%= pedido.cliente_apellido %> <br>
+                Tipo Cliente: <%= pedido.tipo_cliente %> <br>
+                Fecha: <%= new Date(pedido.fecha).toLocaleDateString() %> <br>
+                Cantidad: <%= pedido.cantidad %> <br>
+                Precio Unitario: $<%= parseFloat(pedido.precio_unit).toFixed(2) %>
+              </p>
+              
+              
+              <a href="/edit/<%= pedido.idpedido %>" class="btn btn-warning btn-sm">Editar</a>
+              <a href="/delete/<%= pedido.idpedido %>" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este pedido?')">Eliminar</a>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <div class="alert alert-warning">No hay pedidos registrados.</div>
+  <% } %>
+</main>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const enlacesEliminar = document.querySelectorAll(".delete");
+
+    enlacesEliminar.forEach(enlace => {
+      enlace.addEventListener("click", (evento) => {
+        evento.preventDefault();
+
+        Swal.fire({
+          title: 'Manga',
+          text: '¿Está seguro de Eliminar?',
+          icon: 'question',
+          footer: 'SENATI - Ingeniería Software',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#2980b9',
+          showCancelButton: true,
+          cancelButtonText: 'Cancelar',
+          cancelButtonColor: '#c0392b'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = evento.target.getAttribute("href");
+          }
+        });
+      });
+    });
+  });
+</script>
+
+<%- include('partials/footer') %>
